@@ -296,8 +296,8 @@ function loop(){
 }
 
 function updatePlane(){
-  var targetY = normalize(mousePos.y,-.75,.75,25, 175);
-  var targetX = normalize(mousePos.x,-.75,.75,-100, 100);
+  var targetY = normalize(touchPos.y,-.75,.75,25, 175);
+  var targetX = normalize(touchPos.x,-.75,.75,-100, 100);
   airplane.mesh.position.y += (targetY-airplane.mesh.position.y)*0.1;
   airplane.mesh.rotation.z = (targetY-airplane.mesh.position.y)*0.0128;
   airplane.mesh.rotation.x = (airplane.mesh.position.y-targetY)*0.0064;
@@ -315,6 +315,7 @@ function normalize(v,vmin,vmax,tmin, tmax){
 
 function init(event){
   document.addEventListener('mousemove', handleMouseMove, false);
+  document.addEventListener('touchmove', handleTouchMove, false);
   createScene();
   createLights();
   createPlane();
@@ -330,7 +331,12 @@ function handleMouseMove(event) {
   var ty = 1 - (event.clientY / HEIGHT)*2;
   mousePos = {x:tx, y:ty};
 }
-
+var touchPos={ x: 0, y: 0 };
+    function handleTouchMove(event){
+      var tx = -1 + (event.touches[0].pageX / WIDTH)*2;
+      var ty = 1 - (event.touches[0].pageY / HEIGHT)*2;
+      touchPos = {x:tx, y:ty};
+    }
 window.addEventListener('load', init, false);
 
 
