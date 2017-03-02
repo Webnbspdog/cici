@@ -316,7 +316,11 @@ function normalize(v,vmin,vmax,tmin, tmax){
 
 function init(event){
   document.addEventListener('mousemove', handleMouseMove, false);
-  document.addEventListener('touchmove', handleTouchMove, false);
+  document.addEventListener("touchmove",function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          document.addEventListener('touchmove', handleTouchMove, false);
+       },false);
   createScene();
   createLights();
   createPlane();
@@ -339,17 +343,7 @@ var touchPos={ x: 0, y: 0 };
       touchPos = {x:tx, y:ty};
     }
 window.addEventListener('load', init, false);
-document.addEventListener('touchmove',function(event){
-        //当屏幕有多个touch或者页面被缩放过，就不执行move操作
-        if(event.targetTouches.length > 1 || event.scale && event.scale !== 1) return;
-        var touch = event.targetTouches[0];
-        endPos = {x:touch.pageX - startPos.x,y:touch.pageY - startPos.y};
-        isScrolling = Math.abs(endPos.x) < Math.abs(endPos.y) ? 1:0; //isScrolling为1时，表示纵向滑动，0为横向滑动
-        if(isScrolling === 1){
-            alert(0);
-            event.preventDefault(); //阻止触摸事件的默认行为，即阻止滚屏
-        }
-    }, false);
+
 
 	</script>
 </body>
